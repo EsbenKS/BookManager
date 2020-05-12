@@ -23,7 +23,7 @@ namespace BookManager.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await _context.Loaners
-                .OrderBy(l => l.FullName)
+                .OrderBy(l => l.FirstName)
                 .ToListAsync());
         }
 
