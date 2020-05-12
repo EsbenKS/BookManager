@@ -19,7 +19,9 @@ namespace BookManager.Data
  
         public DbSet<Authorship> Authorships { get; set; }
         public DbSet<Loan> Loans { get; set; }
-        public DbSet<BookManager.Models.Location> Location { get; set; }
+        public DbSet<Loaner> Loaners { get; set; }
+
+        public DbSet<Location> Location { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
           
         {

@@ -13,13 +13,6 @@ namespace BookManager.Models
         public ICollection<Authorship> Authorships { get; set; }
 
 
-        [NotMapped]
-        public string FullName
-        {
-            get
-            {
-                return FirstName + " " + LastName;
-            }
-        } 
+
     }
 }

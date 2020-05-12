@@ -10,24 +10,24 @@ using BookManager.Models;
 
 namespace BookManager.Controllers
 {
-    public class BookController : Controller
+    public class LoanerController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public BookController(ApplicationDbContext context)
+        public LoanerController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Book
+        // GET: Loaner
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Books
-                .OrderBy(b => b.Title)
+            return View(await _context.Loaners
+                .OrderBy(l => l.FullName)
                 .ToListAsync());
         }
 
-        // GET: Book/Details/5
+        // GET: Loaner/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -35,40 +35,40 @@ namespace BookManager.Controllers
                 return NotFound();
             }
 
-            var book = await _context.Books
-                .FirstOrDefaultAsync(m => m.BookID == id);
-            if (book == null)
+            var loaner = await _context.Loaners
+                .FirstOrDefaultAsync(m => m.ID == id);
+            if (loaner == null)
             {
                 return NotFound();
             }
 
-            return View(book);
+            return View(loaner);
         }
 
-        // GET: Book/Create
+        // GET: Loaner/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Book/Create
+        // POST: Loaner/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BookID,Title,Description")] Book book)
+        public async Task<IActionResult> Create([Bind("Active,ID,FirstName,LastName")] Loaner loaner)
         {
             if (ModelState.IsValid)
             {
-                book.BookID = Guid.NewGuid();
-                _context.Add(book);
+                loaner.ID = Guid.NewGuid();
+                _context.Add(loaner);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(book);
+            return View(loaner);
         }
 
-        // GET: Book/Edit/5
+        // GET: Loaner/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -76,22 +76,22 @@ namespace BookManager.Controllers
                 return NotFound();
             }
 
-            var book = await _context.Books.FindAsync(id);
-            if (book == null)
+            var loaner = await _context.Loaners.FindAsync(id);
+            if (loaner == null)
             {
                 return NotFound();
             }
-            return View(book);
+            return View(loaner);
         }
 
-        // POST: Book/Edit/5
+        // POST: Loaner/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("BookID,Title,Description")] Book book)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Active,ID,FirstName,LastName")] Loaner loaner)
         {
-            if (id != book.BookID)
+            if (id != loaner.ID)
             {
                 return NotFound();
             }
@@ -100,12 +100,12 @@ namespace BookManager.Controllers
             {
                 try
                 {
-                    _context.Update(book);
+                    _context.Update(loaner);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BookExists(book.BookID))
+                    if (!LoanerExists(loaner.ID))
                     {
                         return NotFound();
                     }
@@ -116,10 +116,10 @@ namespace BookManager.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(book);
+            return View(loaner);
         }
 
-        // GET: Book/Delete/5
+        // GET: Loaner/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -127,30 +127,30 @@ namespace BookManager.Controllers
                 return NotFound();
             }
 
-            var book = await _context.Books
-                .FirstOrDefaultAsync(m => m.BookID == id);
-            if (book == null)
+            var loaner = await _context.Loaners
+                .FirstOrDefaultAsync(m => m.ID == id);
+            if (loaner == null)
             {
                 return NotFound();
             }
 
-            return View(book);
+            return View(loaner);
         }
 
-        // POST: Book/Delete/5
+        // POST: Loaner/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var book = await _context.Books.FindAsync(id);
-            _context.Books.Remove(book);
+            var loaner = await _context.Loaners.FindAsync(id);
+            _context.Loaners.Remove(loaner);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool BookExists(Guid id)
+        private bool LoanerExists(Guid id)
         {
-            return _context.Books.Any(e => e.BookID == id);
+            return _context.Loaners.Any(e => e.ID == id);
         }
     }
 }

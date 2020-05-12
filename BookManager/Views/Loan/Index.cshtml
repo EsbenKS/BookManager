@@ -1,0 +1,99 @@
+﻿@model LoanVM
+
+@{
+    ViewData["Title"] = "Loans";
+}
+
+<h1>Loans</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<div><h2>Overdue Loans</h2></div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LoanStartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LoanEndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Book)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Loaner)
+            </th>
+          </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.OverdueLoansList) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.LoanStartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LoanEndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Book.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Loaner.FullName)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.LoanID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.LoanID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.LoanID">Delete</a> | 
+                <a asp-action="Return" asp-route-id="@item.LoanID">Return</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<div><h2>All Loans</h2></div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LoanStartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LoanEndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Book)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Loaner)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ActiveLoansList)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LoanStartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LoanEndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Book.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Loaner.FullName)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.LoanID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.LoanID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.LoanID">Delete</a> |
+                    <a asp-action="Return" asp-route-id="@item.LoanID">Return</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

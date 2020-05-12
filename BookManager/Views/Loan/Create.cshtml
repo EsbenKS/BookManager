@@ -1,0 +1,46 @@
+﻿@model Loan
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Loan</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="LoanStartDate" class="control-label"></label>
+                <input asp-for="LoanStartDate" class="form-control" ReadOnly="true"/>
+                <span asp-validation-for="LoanStartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LoanEndDate" class="control-label"></label>
+                <input asp-for="LoanEndDate" class="form-control" />
+                <span asp-validation-for="LoanEndDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BookID" class="control-label"></label>
+                <select asp-for="BookID" class ="form-control" asp-items="ViewBag.BookID"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="LoanerID" class="control-label"></label>
+                <select asp-for="LoanerID" class ="form-control" asp-items="ViewBag.LoanerID"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

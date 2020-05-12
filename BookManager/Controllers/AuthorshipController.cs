@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BookManager.Data;
 using BookManager.Models;
+using Microsoft.Data.SqlClient;
 
 namespace BookManager.Controllers
 {
@@ -22,7 +23,9 @@ namespace BookManager.Controllers
         // GET: Authorship
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Authorships.Include(a => a.Author)
+            var applicationDbContext = _context.Authorships
+                .OrderBy(a => a.Author)
+                .Include(a => a.Author)
                 .OrderBy(c => c.Author.FirstName)
                 .Include(a => a.Book);
             return View(await applicationDbContext.ToListAsync());
@@ -63,15 +66,27 @@ namespace BookManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,BookID,AuthorID")] Authorship authorship)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(authorship);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
+            
             ViewData["AuthorID"] = new SelectList(_context.Authors, "ID", "FullName", authorship.AuthorID);
             ViewData["BookID"] = new SelectList(_context.Books, "BookID", "Title", authorship.BookID);
-            return View(authorship);
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Add(authorship);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateException)
+                {
+               
+                    ModelState.AddModelError(string.Empty, "Duplicate Authorship");
+                    return View(authorship);
+                }
+            }
+            return RedirectToAction(nameof(Index));
+
+       
         }
 
         // GET: Authorship/Edit/5
